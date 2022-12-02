@@ -9,7 +9,8 @@ class CliviaGenerator
   include Presenter
   include Requester
   include HTTParty
-    attr_reader :questions
+    attr_reader :questions, :user_input
+
   def initialize
     # we need to initialize a couple of properties here
     @questions
@@ -25,7 +26,7 @@ class CliviaGenerator
 
   def random_trivia
     # load the questions from the api
-    response = HTTParty.get("https://opentdb.com/api.php?amount=5")
+    response = HTTParty.get("https://opentdb.com/api.php?amount=2")
     # questions are loaded, then let's ask them  
     @questions = JSON.parse(response.body, symbolize_names: true)
     ask_questions
@@ -33,8 +34,11 @@ class CliviaGenerator
 
   def ask_questions
     # ask each question
-    @questions[:results].each_with_index {|question, index| ask_question(index)}
-    
+    @questions[:results].each_with_index do |question, index| 
+      ask_question(index)   
+      puts questions[:results][index][:correct_answer]
+    end
+  
     # if response is correct, put a correct message and increase score
     # if response is incorrect, put an incorrect message, and which was the correct answer
     # once the questions end, show user's score and promp to save it

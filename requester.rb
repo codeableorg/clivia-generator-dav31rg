@@ -24,10 +24,12 @@ module Requester
     puts "Question: #{questions[:results][question][:question]}"
     # show each one of the options
     alternatives = (questions[:results][question][:incorrect_answers] << questions[:results][question][:correct_answer]).sort_by(&:size)
-    alternatives.each_with_index { |alternative, index| puts "#{index + 1}. #{alternative}"}
+    alternatives.each_with_index do |alternative, index|
+      puts "#{index + 1}. #{alternative}"
+    end
     # grab user input
     print "> "
-    gets.chomp
+    @user_input = gets.chomp
   end
 
   def will_save?(score)
