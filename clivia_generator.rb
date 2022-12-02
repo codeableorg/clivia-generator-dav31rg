@@ -57,13 +57,15 @@ class CliviaGenerator
     puts "Do you want to save your score? (y/n)"
     print "> "
     save_input = gets.chomp.downcase
-   if save_input == "n"
-    select_main_menu_action
-   elsif save_input == "y"
+
+   #if save_input == "n"
+    
+   if save_input == "y"
     save(@score)
-   else
-    puts "Invalid option"
-   end 
+   end
+  #  else
+  #   puts "Invalid option"
+  #  end 
     @score = 0
   end
 
