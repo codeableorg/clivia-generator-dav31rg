@@ -2,8 +2,10 @@ module Requester
   def select_main_menu_action
     # prompt the user for the "random | scores | exit" actions
     main_tabs = ["random","scores","exit"]
+    @score = 0
     action = ""
     until action == "exit"
+      puts print_welcome
       puts main_tabs.join(" | ")
       print "> "
       action = gets.chomp
@@ -17,19 +19,19 @@ module Requester
   end 
 
   def ask_question(question)
-    p "Pregunta -#{question + 1}-"
     # show category and difficulty from question
     puts "Category: #{questions[:results][question][:category]} | Difficulty: #{questions[:results][question][:difficulty]}"
     # show the question
-    puts "Question: #{questions[:results][question][:question]}"
+    puts "Question #{question + 1}: #{questions[:results][question][:question]}"
     # show each one of the options
-    alternatives = (questions[:results][question][:incorrect_answers] << questions[:results][question][:correct_answer]).sort_by(&:size)
+    @alternatives = (questions[:results][question][:incorrect_answers] << questions[:results][question][:correct_answer]).sort_by(&:size)
     alternatives.each_with_index do |alternative, index|
       puts "#{index + 1}. #{alternative}"
     end
     # grab user input
+    p questions[:results][question][:correct_answer]
     print "> "
-    @user_input = gets.chomp
+    @user_input = gets.chomp.to_i
   end
 
   def will_save?(score)

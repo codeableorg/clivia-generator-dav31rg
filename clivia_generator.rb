@@ -9,11 +9,12 @@ class CliviaGenerator
   include Presenter
   include Requester
   include HTTParty
-    attr_reader :questions, :user_input
+    attr_reader :questions, :user_input, :alternatives
 
   def initialize
     # we need to initialize a couple of properties here
     @questions
+    @score = 0 
   end
 
   def start
@@ -35,17 +36,43 @@ class CliviaGenerator
   def ask_questions
     # ask each question
     @questions[:results].each_with_index do |question, index| 
-      ask_question(index)   
-      puts questions[:results][index][:correct_answer]
+      ask_question(index)
+      # correct answer
+      correct_answer = questions[:results][index][:correct_answer]
+      # user answer
+      user_answer = @alternatives[@user_input - 1]
+      # if response is correct, put a correct message and increase score
+      if user_answer == correct_answer
+        @score += 10
+        puts "Well done! Your score is #{@score}"
+        puts "--------------------------------------------------"
+        # if response is incorrect, put an incorrect message, and which was the correct answer
+      else
+          puts "#{user_answer}... Incorrect!"
+          puts "The correct answer was: #{correct_answer}"
+          puts "--------------------------------------------------"          
+      end
     end
-  
-    # if response is correct, put a correct message and increase score
-    # if response is incorrect, put an incorrect message, and which was the correct answer
     # once the questions end, show user's score and promp to save it
+    puts "Do you want to save your score? (y/n)"
+    print "> "
+    save_input = gets.chomp.downcase
+   if save_input == "n"
+    select_main_menu_action
+   elsif save_input == "y"
+    save(@score)
+   else
+    puts "Invalid option"
+   end 
+    @score = 0
   end
 
   def save(data)
     # write to file the scores data
+    puts "Type the name to assign to the score"
+    print "> "
+    name = gets.chomp
+    puts "#{name} get #{data}"
   end
 
   def parse_scores
