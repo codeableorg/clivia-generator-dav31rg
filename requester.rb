@@ -20,13 +20,13 @@ module Requester
 
   def ask_question(question)
     # show category and difficulty from question
-    puts "Category: #{questions[:results][question][:category]} | Difficulty: #{questions[:results][question][:difficulty]}"
+    puts HTMLEntities.new.decode "Category: #{questions[:results][question][:category]} | Difficulty: #{questions[:results][question][:difficulty]}"
     # show the question
-    puts "Question #{question + 1}: #{questions[:results][question][:question]}"
+    puts HTMLEntities.new.decode "Question #{question + 1}: #{questions[:results][question][:question]}"
     # show each one of the options
     @alternatives = (questions[:results][question][:incorrect_answers] << questions[:results][question][:correct_answer]).sort_by(&:size)
     alternatives.each_with_index do |alternative, index|
-      puts "#{index + 1}. #{alternative}"
+      puts HTMLEntities.new.decode "#{index + 1}. #{alternative}"
     end
     # grab user input
     p questions[:results][question][:correct_answer]

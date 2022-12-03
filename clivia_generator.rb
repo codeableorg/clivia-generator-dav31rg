@@ -2,6 +2,8 @@
 require "httparty"
 require "json"
 require 'terminal-table'
+require 'htmlentities'
+
 # do not forget to require_relative your local dependencies
 require_relative "presenter"
 require_relative "requester"
@@ -11,12 +13,15 @@ class CliviaGenerator
   include Requester
   include HTTParty
     attr_reader :questions, :user_input, :alternatives
+    attr_accessor :prueba, :history_scores
 
   def initialize
     # we need to initialize a couple of properties here
     @questions
     @score = 0
-    @safe_array = [["",""]] 
+    file = File.read("scores.json")   
+    @players = JSON.parse(file)["players"]
+    puts @players
   end
 
   def start
@@ -45,12 +50,12 @@ class CliviaGenerator
       # if response is correct, put a correct message and increase score
       if user_answer == correct_answer
         @score += 10
-        puts "#{user_answer}... Correct!"
+        puts HTMLEntities.new.decode "#{user_answer}... Correct!"
         puts "--------------------------------------------------"
         # if response is incorrect, put an incorrect message, and which was the correct answer
       else
-        puts "#{user_answer}... Incorrect!"
-        puts "The correct answer was: #{correct_answer}"
+        puts HTMLEntities.new.decode "#{user_answer}... Incorrect!"
+        puts HTMLEntities.new.decode "The correct answer was: #{correct_answer}"
         puts "--------------------------------------------------"          
       end
     end
@@ -71,11 +76,28 @@ class CliviaGenerator
 
   def save(name = "Anonymous", data)
     # write to file the scores data
-    @safe_array << ["#{name}","#{data}"]
+    actual_player = { "name": "#{name}", "score": "#{data}"}
+    #actual_save = { "name"=>"#{name}", "score"=>"#{data}"}
+    #actual_save = {:name "#{name}",:score "#{data}"}
+    @prueba = @players << actual_player
+    prueba_hash = {"param": @prueba}
+    pp prueba_hash
+
+    File.open("scores.json", "w") do |file|
+       file.write(prueba_hash.to_json)
+     end
+
   end
 
   def parse_scores
     # get the scores data from file
+    
+    
+
+    
+    # Bring the object back into Ruby
+    
+
   end
 
   def load_questions
@@ -89,7 +111,11 @@ class CliviaGenerator
 
   def print_scores
     # print the scores sorted from top to bottom
+
+
     p @safe_array
+    parsed = parse_scores
+    p parsed
     table = Terminal::Table.new 
     table.title = "Top Scores"
     table.headings = ["Name","Score"]
