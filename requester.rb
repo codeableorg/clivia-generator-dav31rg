@@ -11,7 +11,7 @@ module Requester
       action = gets.chomp
       case action
       when "random" then random_trivia
-      when "scores" then puts "I'm in scores"
+      when "scores" then print_scores
       when "exit" then puts "Thanks for use my app"
       else puts "Invalid option"
       end

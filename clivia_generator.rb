@@ -1,6 +1,7 @@
 # do not forget to require your gem dependencies
 require "httparty"
 require "json"
+require 'terminal-table'
 # do not forget to require_relative your local dependencies
 require_relative "presenter"
 require_relative "requester"
@@ -14,12 +15,12 @@ class CliviaGenerator
   def initialize
     # we need to initialize a couple of properties here
     @questions
-    @score = 0 
+    @score = 0
+    @safe_array = [["",""]] 
   end
 
   def start
     # welcome message
-    puts print_welcome
     # prompt the user for an action
     # keep going until the user types exit
     select_main_menu_action
@@ -44,37 +45,33 @@ class CliviaGenerator
       # if response is correct, put a correct message and increase score
       if user_answer == correct_answer
         @score += 10
-        puts "Well done! Your score is #{@score}"
+        puts "#{user_answer}... Correct!"
         puts "--------------------------------------------------"
         # if response is incorrect, put an incorrect message, and which was the correct answer
       else
-          puts "#{user_answer}... Incorrect!"
-          puts "The correct answer was: #{correct_answer}"
-          puts "--------------------------------------------------"          
+        puts "#{user_answer}... Incorrect!"
+        puts "The correct answer was: #{correct_answer}"
+        puts "--------------------------------------------------"          
       end
     end
     # once the questions end, show user's score and promp to save it
+    puts "Well done! Your score is #{@score}"
     puts "Do you want to save your score? (y/n)"
     print "> "
     save_input = gets.chomp.downcase
-
-   #if save_input == "n"
-    
-   if save_input == "y"
-    save(@score)
-   end
-  #  else
-  #   puts "Invalid option"
-  #  end 
-    @score = 0
-  end
-
-  def save(data)
-    # write to file the scores data
+    # only if with "y" to prevente get in the bucle
+    if save_input == "y"
     puts "Type the name to assign to the score"
     print "> "
     name = gets.chomp
-    puts "#{name} get #{data}"
+      save(name, @score)
+    end
+    @score = 0
+  end
+
+  def save(name = "Anonymous", data)
+    # write to file the scores data
+    @safe_array << ["#{name}","#{data}"]
   end
 
   def parse_scores
@@ -92,6 +89,13 @@ class CliviaGenerator
 
   def print_scores
     # print the scores sorted from top to bottom
+    p @safe_array
+    table = Terminal::Table.new 
+    table.title = "Top Scores"
+    table.headings = ["Name","Score"]
+    table.rows = @safe_array.sort_by {|name,score| score.to_i }.reverse
+    puts table                            
+
   end
 end
 
