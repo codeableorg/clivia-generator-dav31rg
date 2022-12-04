@@ -29,7 +29,6 @@ module Requester
       puts HTMLEntities.new.decode "#{index + 1}. #{alternative}"
     end
     # grab user input
-    p questions[:results][question][:correct_answer]
     print "> "
     @user_input = gets.chomp.to_i
   end
