@@ -1,0 +1,13 @@
+current directory: /root/codeable/cohort-9/week-4/project/clivia-generator-dav31rg/vendor/bundle/ruby/3.0.0/gems/json-2.6.2/ext/json
+/usr/bin/ruby3.0 -I /usr/lib/ruby/vendor_ruby -r ./siteconf20221201-863-2d2su0.rb extconf.rb
+creating Makefile
+
+current directory: /root/codeable/cohort-9/week-4/project/clivia-generator-dav31rg/vendor/bundle/ruby/3.0.0/gems/json-2.6.2/ext/json
+make DESTDIR\= clean
+
+current directory: /root/codeable/cohort-9/week-4/project/clivia-generator-dav31rg/vendor/bundle/ruby/3.0.0/gems/json-2.6.2/ext/json
+make DESTDIR\=
+make: Nothing to be done for 'all'.
+
+current directory: /root/codeable/cohort-9/week-4/project/clivia-generator-dav31rg/vendor/bundle/ruby/3.0.0/gems/json-2.6.2/ext/json
+make DESTDIR\= install
