@@ -1,186 +1,37 @@
-# CLIvia generator
+# CLIvia Generator
 
-## Start the program
+CLIvia Generator is a command-line program designed to challenge your knowledge with a series of trivia questions. Test your expertise in various categories and earn points for correct answers, also can save your score.
 
-When the program starts, we will initialize the scores filename, the array of
-questions, and the user's score.
+## Getting Started
 
-The filename value is `scores.json` by default, but the user can pass a custom
-filename as a command-line argument. For example
-`ruby clivia_generator.rb custom_scores.json`
+1. Clone this repository: `git clone https://github.com/dav31rg/clivia-generator.git`
+2. Install required dependencies: `bundle install`
+3. Start the program: `ruby clivia_generator.rb`
 
-```
-ruby clivia_generator.rb
-###################################
-#   Welcome to Clivia Generator   #
-###################################
-random | scores | exit
->
-```
+## Usage
 
-- Error message when invalid option: "Invalid option"
+Upon launching CLIvia Generator, you'll be greeted with a welcome screen presenting three options: "random," "scores," or "exit."
 
-## When "random" is selected
+- Choose **"random"** to begin a trivia round. The program will fetch 10 random questions from an external API and present them one by one.
 
-You should load **10** random questions from the API. Once they are loaded you
-will show each of them **one by one**, allowing the user to select one of the
-options.
+- For each question, input your answer by selecting the corresponding option number. The program will inform you whether your answer is correct or incorrect, providing the correct answer for incorrect responses. Correct answers earn you 10 points.
 
-Answers could come encoded with some special characters, use the
-[HTMLEntities](https://www.rubydoc.info/gems/htmlentities/4.3.2/HTMLEntities)
-gem to decode it, and show the text as expected.
+- After completing all questions, the program will display your total score and prompt you to save it. Respond with 'y' to save your score, and provide a name for identification. If no name is given, the score will be saved as "Anonymous."
 
-```
-###################################
-#   Welcome to Clivia Generator   #
-###################################
-random | scores | exit
-> random
-Category: History | Difficulty: medium
-Question: What was the capital of South Vietnam before the Vietnam War?
-1. Ho Chi Minh City
-2. Hue
-3. Saigon
-4. Hanoi
-> 
-```
+- To view **"scores,"** select this option to display the top scores saved from previous rounds. The scores are presented in a table format with columns for "Name" and "Score."
 
-The base_uri of the request is https://opentdb.com/, need more detail
-on the API? Look at [here](https://opentdb.com/api_config.php)
+- Select **"exit"** to leave the program.
 
-Once the user gives an answer you should compare it with the correct answer
-delivered by the API. Then give the user a correct or incorrect response
-message. If the user's answer was incorrect, you will show the correct answer.
-Finally, if the user's answer was correct we will increase their score by 10.
+## Technologies Used
 
-```
-...
-Category: History | Difficulty: medium
-Question: What was the capital of South Vietnam before the Vietnam War?
-1. Ho Chi Minh City
-2. Hue
-3. Saigon
-4. Hanoi
-> 1
-Ho Chi Minh City... Incorrect!
-The correct answer was: Saigon
-```
+- Ruby
+- [HTMLEntities](https://www.rubydoc.info/gems/htmlentities/4.3.2/HTMLEntities) gem
+- [Open Trivia Database](https://opentdb.com/) API
 
-Then, continue showing the next questions you reach the end of the questions
-array.
+## Acknowledgments
 
-```
-...
-> 1
-Ho Chi Minh City... Incorrect!
-The correct answer was: Saigon
-Category: Entertainment: Musicals & Theatres | Difficulty: hard
-Question: In Les Misérables, who is Prison Code 24601?
-1. Javert
-2. Jean Claude Van Damme
-3. Jean Valjean
-4. Marius Pontmercy
->
-```
+Special thanks to the [Open Trivia Database](https://opentdb.com/) for providing the trivia questions.
 
-Once we get to the end of the questions, we will show the message
-`Well done! Your score is {score}` and then we will prompt the user to persist
-the score.
+## Enjoy the Challenge!
 
-```
-...
-September 2nd, 1945... Incorrect!
-The correct answer was: May 9th, 1945
-Category: Entertainment: Video Games | Difficulty: medium
-Question: In the Resident Evil series, Leon S. Kennedy is a member of STARS.
-1. True
-2. False
-> 1
-True... Incorrect!
-The correct answer was: False
-Well done! Your score is 30
---------------------------------------------------
-Do you want to save your score? (y/n)
-```
-
-If user types `n` or `N`, then the program will go back to the actions menu
-
-```
-...
-Well done! Your score is 30
---------------------------------------------------
-Do you want to save your score? (y/n)
-> n
-###################################
-#   Welcome to Clivia Generator   #
-###################################
-random | scores | exit
->
-```
-
-- Error message when invalid option: "Invalid option"
-
-If the user types `y` or `Y`, then the program will prompt the user to assign a
-name to the score.
-
-Once the name is given by the user, we will append the recent score to the file
-pointed by the filename we declared at initialization, **this file should be a
-JSON and should start empty**.
-
-In case the user didn't type a name, we will add the score as `"Anonymous"` to
-the scores' file.
-
-Finally, show back the welcome message with the options menu.
-
-```
-...
-Well done! Your score is 30
---------------------------------------------------
-Do you want to save your score? (y/n)
-> y
-Type the name to assign to the score
-> Codeable
-###################################
-#   Welcome to Clivia Generator   #
-###################################
-random | scores | exit
->
-```
-
-<aside> 💡 In case you are using JSON.parse within `File.read` to grab scores
-data from the declared file, rescue `Errno::ENOENT` to take care of the error
-when the file is empty to be able to keep going. </aside>
-
-## When scores action is selected
-
-Last but not least, when scores action is selected you should show the scores
-that were saved previously, these scores should be shown in order from top to
-bottom and inside a table that includes the title `Top Scores`, and the headings
-`Name` ****and `Score`.
-
-Once the table is shown, we will prompt the user with the welcome menu again so
-they can keep going with another Clivia.
-
-```
-...
-###################################
-#   Welcome to Clivia Generator   #
-###################################
-random | scores | exit
-> scores
-+-----------+-------+
-|    Top Scores     |
-+-----------+-------+
-| Name      | Score |
-+-----------+-------+
-| Deyvi     | 40    |
-| Diego     | 40    |
-| Wences    | 30    |
-| Anonymous | 20    |
-+-----------+-------+
-###################################
-#   Welcome to Clivia Generator   #
-###################################
-random | scores | exit
->
-```
+CLIvia Generator offers a fun way to engage your knowledge across diverse categories. Challenge yourself and enjoy the trivia experience.
